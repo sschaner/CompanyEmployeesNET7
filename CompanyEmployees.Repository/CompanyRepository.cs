@@ -34,5 +34,20 @@
         public Company GetCompany(Guid companyId, bool trackChanges) =>
             FindByCondition(c => c.Id.Equals(companyId), trackChanges)
             .SingleOrDefault();
+
+        /// <summary>
+        /// Gets the by ids.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <returns></returns>
+        public IEnumerable<Company> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+            FindByCondition(x => ids.Contains(x.Id), trackChanges);
+
+        /// <summary>
+        /// Creates the company.
+        /// </summary>
+        /// <param name="company">The company.</param>
+        public void CreateCompany(Company company) => Create(company);
     }
 }

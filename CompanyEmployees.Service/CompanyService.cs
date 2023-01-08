@@ -3,6 +3,7 @@
     using AutoMapper;
     using CompanyEmployees.Contracts;
     using CompanyEmployees.Entities.Exceptions;
+    using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
 
@@ -64,6 +65,66 @@
             var companyDto = _mapper.Map<CompanyDto>(company);
 
             return companyDto;
+        }
+
+        /// <summary>
+        /// Gets the by ids.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <returns></returns>
+        /// <exception cref="IdParametersBadRequestException"></exception>
+        /// <exception cref="CollectionByIdsBadRequestException"></exception>
+        public IEnumerable<CompanyDto> GetByIds(IEnumerable<Guid> ids, bool trackChanges)
+        {
+            if (ids is null)
+                throw new IdParametersBadRequestException();
+
+            var companyEntities = _repository.Company.GetByIds(ids, trackChanges);
+            if (ids.Count() != companyEntities.Count())
+                throw new CollectionByIdsBadRequestException();
+
+            var companiesToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+
+            return companiesToReturn;
+        }
+
+        /// <summary>
+        /// Creates the company.
+        /// </summary>
+        /// <param name="company">The company.</param>
+        /// <returns></returns>
+        public CompanyDto CreateCompany(CompanyForCreationDto company)
+        {
+            var companyEntity = _mapper.Map<Company>(company);
+
+            // Create a company and save to the database
+            _repository.Company.CreateCompany(companyEntity);
+            _repository.Save();
+
+            var companyToReturn = _mapper.Map<CompanyDto>(companyEntity);
+
+            // Return the created company
+            return companyToReturn;
+        }
+
+        public (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection (IEnumerable<CompanyForCreationDto> companyCollection)
+        {
+            if (companyCollection is null)
+                throw new CompanyCollectionBadRequest();
+
+            var companyEntities = _mapper.Map<IEnumerable<Company>>(companyCollection);
+            foreach (var company in companyEntities)
+            {
+                _repository.Company.CreateCompany(company);
+            }
+
+            _repository.Save();
+
+            var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+            var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
+
+            return (companies: companyCollectionToReturn, ids: ids);
         }
     }
 }

@@ -20,5 +20,12 @@
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
         Employee GetEmployee(Guid companyId, Guid id, bool trackChanges);
+
+        /// <summary>
+        /// Creates the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="employee">The employee.</param>
+        void CreateEmployeeForCompany(Guid companyId, Employee employee);
     }
 }

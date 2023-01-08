@@ -3,6 +3,7 @@
     using AutoMapper;
     using CompanyEmployees.Contracts;
     using CompanyEmployees.Entities.Exceptions;
+    using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
 
@@ -77,6 +78,30 @@
             var employee = _mapper.Map<EmployeeDto>(employeeDb);
 
             return employee;
+        }
+
+        /// <summary>
+        /// Creates the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="employeeForCreation">The employee for creation.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <returns></returns>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        public EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCreationDto employeeForCreation, bool trackChanges)
+        {
+            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employeeEntity = _mapper.Map<Employee>(employeeForCreation);
+
+            _repository.Employee.CreateEmployeeForCompany(companyId, employeeEntity);
+            _repository.Save();
+
+            var employeeToReturn = _mapper.Map<EmployeeDto>(employeeEntity);
+
+            return employeeToReturn;
         }
     }
 }
