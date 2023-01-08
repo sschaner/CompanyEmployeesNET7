@@ -24,5 +24,15 @@
             FindAll(trackChanges)
             .OrderBy(c => c.Name)
             .ToList();
+
+        /// <summary>
+        /// Gets the company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <returns></returns>
+        public Company GetCompany(Guid companyId, bool trackChanges) =>
+            FindByCondition(c => c.Id.Equals(companyId), trackChanges)
+            .SingleOrDefault();
     }
 }
