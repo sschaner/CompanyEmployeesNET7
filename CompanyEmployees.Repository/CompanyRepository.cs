@@ -2,6 +2,7 @@
 {
     using CompanyEmployees.Contracts;
     using CompanyEmployees.Entities.Models;
+    using Microsoft.EntityFrameworkCore;
 
     public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
     {
@@ -16,33 +17,34 @@
         }
 
         /// <summary>
-        /// Gets all companies.
+        /// Gets all companies asynchronous.
         /// </summary>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public IEnumerable<Company> GetAllCompanies(bool trackChanges) =>
-            FindAll(trackChanges)
+        public async Task<IEnumerable<Company>> GetAllCompaniesAsync(bool trackChanges) =>
+            await FindAll(trackChanges)
             .OrderBy(c => c.Name)
-            .ToList();
+            .ToListAsync();
 
         /// <summary>
-        /// Gets the company.
+        /// Gets the company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public Company GetCompany(Guid companyId, bool trackChanges) =>
-            FindByCondition(c => c.Id.Equals(companyId), trackChanges)
-            .SingleOrDefault();
+        public async Task<Company> GetCompanyAsync(Guid companyId, bool trackChanges) =>
+            await FindByCondition(c => c.Id.Equals(companyId), trackChanges)
+            .SingleOrDefaultAsync();
 
         /// <summary>
-        /// Gets the by ids.
+        /// Gets the by ids asynchronous.
         /// </summary>
         /// <param name="ids">The ids.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public IEnumerable<Company> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
-            FindByCondition(x => ids.Contains(x.Id), trackChanges);
+        public async Task<IEnumerable<Company>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) =>
+            await FindByCondition(x => ids.Contains(x.Id), trackChanges)
+            .ToListAsync();
 
         /// <summary>
         /// Creates the company.

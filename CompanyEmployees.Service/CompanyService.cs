@@ -38,27 +38,28 @@
         }
 
         /// <summary>
-        /// Gets all companies.
+        /// Gets all companies asynchronous.
         /// </summary>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public IEnumerable<CompanyDto> GetAllCompanies(bool trackChanges)
+        public async Task<IEnumerable<CompanyDto>> GetAllCompaniesAsync(bool trackChanges)
         {
-                var companies = _repository.Company.GetAllCompanies(trackChanges);
+                var companies =  await _repository.Company.GetAllCompaniesAsync(trackChanges);
                 var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
 
                 return companiesDto;
         }
 
         /// <summary>
-        /// Gets the company.
+        /// Gets the company asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public CompanyDto GetCompany(Guid id, bool trackChanges)
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        public async Task<CompanyDto> GetCompanyAsync(Guid id, bool trackChanges)
         {
-            var company = _repository.Company.GetCompany(id, trackChanges);
+            var company = await _repository.Company.GetCompanyAsync(id, trackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(id);
 
@@ -68,19 +69,19 @@
         }
 
         /// <summary>
-        /// Gets the by ids.
+        /// Gets the by ids asynchronous.
         /// </summary>
         /// <param name="ids">The ids.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        /// <exception cref="IdParametersBadRequestException"></exception>
-        /// <exception cref="CollectionByIdsBadRequestException"></exception>
-        public IEnumerable<CompanyDto> GetByIds(IEnumerable<Guid> ids, bool trackChanges)
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.IdParametersBadRequestException"></exception>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CollectionByIdsBadRequestException"></exception>
+        public async Task<IEnumerable<CompanyDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)
         {
             if (ids is null)
                 throw new IdParametersBadRequestException();
 
-            var companyEntities = _repository.Company.GetByIds(ids, trackChanges);
+            var companyEntities = await _repository.Company.GetByIdsAsync(ids, trackChanges);
             if (ids.Count() != companyEntities.Count())
                 throw new CollectionByIdsBadRequestException();
 
@@ -90,17 +91,17 @@
         }
 
         /// <summary>
-        /// Creates the company.
+        /// Creates the company asynchronous.
         /// </summary>
         /// <param name="company">The company.</param>
         /// <returns></returns>
-        public CompanyDto CreateCompany(CompanyForCreationDto company)
+        public async Task<CompanyDto> CreateCompanyAsync(CompanyForCreationDto company)
         {
             var companyEntity = _mapper.Map<Company>(company);
 
             // Create a company and save to the database
             _repository.Company.CreateCompany(companyEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
 
             var companyToReturn = _mapper.Map<CompanyDto>(companyEntity);
 
@@ -109,12 +110,12 @@
         }
 
         /// <summary>
-        /// Creates the company collection.
+        /// Creates the company collection asynchronous.
         /// </summary>
         /// <param name="companyCollection">The company collection.</param>
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyCollectionBadRequest"></exception>
-        public (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection (IEnumerable<CompanyForCreationDto> companyCollection)
+        public async Task<(IEnumerable<CompanyDto> companies, string ids)> CreateCompanyCollectionAsync (IEnumerable<CompanyForCreationDto> companyCollection)
         {
             if (companyCollection is null)
                 throw new CompanyCollectionBadRequest();
@@ -125,7 +126,7 @@
                 _repository.Company.CreateCompany(company);
             }
 
-            _repository.Save();
+            await _repository.SaveAsync();
 
             var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
@@ -134,36 +135,36 @@
         }
 
         /// <summary>
-        /// Deletes the company.
+        /// Deletes the company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public void DeleteCompany(Guid companyId, bool trackChanges)
+        public async Task DeleteCompanyAsync(Guid companyId, bool trackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
             _repository.Company.DeleteCompany(company);
-            _repository.Save();
+            await _repository.SaveAsync();
         }
 
         /// <summary>
-        /// Updates the company.
+        /// Updates the company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="companyForUpdate">The company for update.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges)
+        public async Task UpdateCompanyAsync(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges)
         {
-            var companyEntity = _repository.Company.GetCompany(companyId, trackChanges);
+            var companyEntity = await _repository.Company.GetCompanyAsync(companyId, trackChanges);
             if (companyEntity is null)
                 throw new CompanyNotFoundException(companyId);
 
             _mapper.Map(companyForUpdate, companyEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
         }
     }
 }

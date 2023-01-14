@@ -5,21 +5,21 @@
     public interface IEmployeeRepository
     {
         /// <summary>
-        /// Gets the employees.
+        /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        IEnumerable<Employee> GetEmployees(Guid companyId, bool trackChanges);
+        Task<IEnumerable<Employee>> GetEmployeesAsync(Guid companyId, bool trackChanges);
 
         /// <summary>
-        /// Gets the employee.
+        /// Gets the employee asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="id">The identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        Employee GetEmployee(Guid companyId, Guid id, bool trackChanges);
+        Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges);
 
         /// <summary>
         /// Creates the employee for company.

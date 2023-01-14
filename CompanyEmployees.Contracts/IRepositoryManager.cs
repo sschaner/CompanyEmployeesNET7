@@ -19,8 +19,8 @@
         IEmployeeRepository Employee { get; }
 
         /// <summary>
-        /// Saves this instance.
+        /// Saves the asynchronous.
         /// </summary>
-        void Save();
+        Task SaveAsync();
     }
 }

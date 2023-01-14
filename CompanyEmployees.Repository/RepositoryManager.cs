@@ -47,8 +47,8 @@
         public IEmployeeRepository Employee => _employeeRepository.Value;
 
         /// <summary>
-        /// Saves this instance.
+        /// Saves the asynchronous.
         /// </summary>
-        public void Save() => _repositoryContext.SaveChanges();
+        public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
     }
 }

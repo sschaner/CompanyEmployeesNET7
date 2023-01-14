@@ -39,26 +39,26 @@
         }
 
         /// <summary>
-        /// Gets the employees.
+        /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public IEnumerable<EmployeeDto> GetEmployees(Guid companyId, bool trackChanges)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(Guid companyId, bool trackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
-            var employeesFromDb = _repository.Employee.GetEmployees(companyId, trackChanges);
+            var employeesFromDb = await _repository.Employee.GetEmployeesAsync(companyId, trackChanges);
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesFromDb);
 
             return employeesDto;
         }
 
         /// <summary>
-        /// Gets the employee.
+        /// Gets the employee asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="id">The identifier.</param>
@@ -66,13 +66,13 @@
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
-        public EmployeeDto GetEmployee(Guid companyId, Guid id, bool trackChanges)
+        public async Task<EmployeeDto> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
-            var employeeDb = _repository.Employee.GetEmployee(companyId, id, trackChanges);
+            var employeeDb = await _repository.Employee.GetEmployeeAsync(companyId, id, trackChanges);
             if (employeeDb is null)
                 throw new EmployeeNotFoundException(id);
 
@@ -82,23 +82,23 @@
         }
 
         /// <summary>
-        /// Creates the employee for company.
+        /// Creates the employee for company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="employeeForCreation">The employee for creation.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCreationDto employeeForCreation, bool trackChanges)
+        public async Task<EmployeeDto> CreateEmployeeForCompanyAsync(Guid companyId, EmployeeForCreationDto employeeForCreation, bool trackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
             var employeeEntity = _mapper.Map<Employee>(employeeForCreation);
 
             _repository.Employee.CreateEmployeeForCompany(companyId, employeeEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
 
             var employeeToReturn = _mapper.Map<EmployeeDto>(employeeEntity);
 
@@ -106,29 +106,29 @@
         }
 
         /// <summary>
-        /// Deletes the employee for company.
+        /// Deletes the employee for company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="id">The identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
-        public void DeleteEmployeeForCompany(Guid companyId, Guid id, bool trackChanges)
+        public async Task DeleteEmployeeForCompanyAsync(Guid companyId, Guid id, bool trackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
-            var employeeForCompany = _repository.Employee.GetEmployee(companyId, id, trackChanges);
+            var employeeForCompany = await _repository.Employee.GetEmployeeAsync(companyId, id, trackChanges);
             if (employeeForCompany is null)
                 throw new EmployeeNotFoundException(id);
 
             _repository.Employee.DeleteEmployee(employeeForCompany);
-            _repository.Save();
+            await _repository.SaveAsync();
         }
 
         /// <summary>
-        /// Updates the employee for company.
+        /// Updates the employee for company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="id">The identifier.</param>
@@ -137,22 +137,22 @@
         /// <param name="empTrackChanges">if set to <c>true</c> [emp track changes].</param>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
-        public void UpdateEmployeeForCompany(Guid companyId, Guid id, EmployeeForUpdateDto employeeForUpdate, bool compTrackChanges, bool empTrackChanges)
+        public async Task UpdateEmployeeForCompanyAsync(Guid companyId, Guid id, EmployeeForUpdateDto employeeForUpdate, bool compTrackChanges, bool empTrackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, compTrackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, compTrackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
-            var employeeEntity = _repository.Employee.GetEmployee(companyId, id, empTrackChanges);
+            var employeeEntity = await _repository.Employee.GetEmployeeAsync(companyId, id, empTrackChanges);
             if (employeeEntity is null)
                 throw new EmployeeNotFoundException(id);
 
             _mapper.Map(employeeForUpdate, employeeEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
         }
 
         /// <summary>
-        /// Gets the employee for patch.
+        /// Gets the employee for patch asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="id">The identifier.</param>
@@ -161,13 +161,13 @@
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
-        public (EmployeeForUpdateDto employeeToPatch, Employee employeeEntity) GetEmployeeForPatch(Guid companyId, Guid id, bool compTrackChanges, bool empTrackChanges)
+        public async Task<(EmployeeForUpdateDto employeeToPatch, Employee employeeEntity)> GetEmployeeForPatchAsync(Guid companyId, Guid id, bool compTrackChanges, bool empTrackChanges)
         {
-            var company = _repository.Company.GetCompany(companyId, compTrackChanges);
+            var company = await _repository.Company.GetCompanyAsync(companyId, compTrackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
-            var employeeEntity = _repository.Employee.GetEmployee(companyId, id, empTrackChanges);
+            var employeeEntity = await _repository.Employee.GetEmployeeAsync(companyId, id, empTrackChanges);
             if (employeeEntity is null)
                 throw new EmployeeNotFoundException(id);
 
@@ -177,15 +177,15 @@
         }
 
         /// <summary>
-        /// Saves the changes for patch.
+        /// Saves the changes for patch asynchronous.
         /// </summary>
         /// <param name="employeeToPatch">The employee to patch.</param>
         /// <param name="employeeEntity">The employee entity.</param>
-        public void SaveChangesForPatch(EmployeeForUpdateDto employeeToPatch, Employee employeeEntity)
+        public async Task SaveChangesForPatchAsync(EmployeeForUpdateDto employeeToPatch, Employee employeeEntity)
         {
             _mapper.Map(employeeToPatch, employeeEntity);
 
-            _repository.Save();
+            await _repository.SaveAsync();
         }
     }
 }

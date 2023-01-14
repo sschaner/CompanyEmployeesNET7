@@ -5,55 +5,57 @@
     public interface ICompanyService
     {
         /// <summary>
-        /// Gets all companies.
+        /// Gets all companies asynchronous.
         /// </summary>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        IEnumerable<CompanyDto> GetAllCompanies(bool trackChanges);
+        Task<IEnumerable<CompanyDto>> GetAllCompaniesAsync(bool trackChanges);
 
         /// <summary>
-        /// Gets the company.
+        /// Gets the company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        CompanyDto GetCompany(Guid companyId, bool trackChanges);
+        Task<CompanyDto> GetCompanyAsync(Guid companyId, bool trackChanges);
 
         /// <summary>
-        /// Gets the by ids.
+        /// Gets the by ids asynchronous.
         /// </summary>
         /// <param name="ids">The ids.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        IEnumerable<CompanyDto> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
+        Task<IEnumerable<CompanyDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
 
         /// <summary>
-        /// Creates the company.
+        /// Creates the company asynchronous.
         /// </summary>
         /// <param name="company">The company.</param>
         /// <returns></returns>
-        CompanyDto CreateCompany(CompanyForCreationDto company);
+        Task<CompanyDto> CreateCompanyAsync(CompanyForCreationDto company);
 
         /// <summary>
-        /// Creates the company collection.
+        /// Creates the company collection asynchronous.
         /// </summary>
         /// <param name="companyCollection">The company collection.</param>
         /// <returns></returns>
-        (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection(IEnumerable<CompanyForCreationDto> companyCollection);
+        Task<(IEnumerable<CompanyDto> companies, string ids)> CreateCompanyCollectionAsync(IEnumerable<CompanyForCreationDto> companyCollection);
 
         /// <summary>
-        /// Deletes the company.
+        /// Deletes the company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
-        void DeleteCompany(Guid companyId, bool trackChanges);
+        /// <returns></returns>
+        Task DeleteCompanyAsync(Guid companyId, bool trackChanges);
 
         /// <summary>
-        /// Updates the company.
+        /// Updates the company asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
         /// <param name="companyForUpdate">The company for update.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
-        void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges);
+        /// <returns></returns>
+        Task UpdateCompanyAsync(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges);
     }
 }
