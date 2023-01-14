@@ -126,5 +126,29 @@
             _repository.Employee.DeleteEmployee(employeeForCompany);
             _repository.Save();
         }
+
+        /// <summary>
+        /// Updates the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="employeeForUpdate">The employee for update.</param>
+        /// <param name="compTrackChanges">if set to <c>true</c> [comp track changes].</param>
+        /// <param name="empTrackChanges">if set to <c>true</c> [emp track changes].</param>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
+        public void UpdateEmployeeForCompany(Guid companyId, Guid id, EmployeeForUpdateDto employeeForUpdate, bool compTrackChanges, bool empTrackChanges)
+        {
+            var company = _repository.Company.GetCompany(companyId, compTrackChanges);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employeeEntity = _repository.Employee.GetEmployee(companyId, id, empTrackChanges);
+            if (employeeEntity is null)
+                throw new EmployeeNotFoundException(id);
+
+            _mapper.Map(employeeForUpdate, employeeEntity);
+            _repository.Save();
+        }
     }
 }

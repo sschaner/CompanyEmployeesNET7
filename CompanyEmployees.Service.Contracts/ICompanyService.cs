@@ -47,5 +47,13 @@
         /// <param name="companyId">The company identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         void DeleteCompany(Guid companyId, bool trackChanges);
+
+        /// <summary>
+        /// Updates the company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="companyForUpdate">The company for update.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges);
     }
 }

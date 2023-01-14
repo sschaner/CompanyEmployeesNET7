@@ -37,5 +37,15 @@
         /// <param name="id">The identifier.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         void DeleteEmployeeForCompany(Guid companyId, Guid id, bool trackChanges);
+
+        /// <summary>
+        /// Updates the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="employeeForUpdate">The employee for update.</param>
+        /// <param name="compTrackChanges">if set to <c>true</c> [comp track changes].</param>
+        /// <param name="empTrackChanges">if set to <c>true</c> [emp track changes].</param>
+        void UpdateEmployeeForCompany(Guid companyId, Guid id, EmployeeForUpdateDto employeeForUpdate, bool compTrackChanges, bool empTrackChanges);
     }
 }

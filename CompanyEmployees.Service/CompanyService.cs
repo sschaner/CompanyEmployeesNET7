@@ -148,5 +148,22 @@
             _repository.Company.DeleteCompany(company);
             _repository.Save();
         }
+
+        /// <summary>
+        /// Updates the company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="companyForUpdate">The company for update.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        public void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges)
+        {
+            var companyEntity = _repository.Company.GetCompany(companyId, trackChanges);
+            if (companyEntity is null)
+                throw new CompanyNotFoundException(companyId);
+
+            _mapper.Map(companyForUpdate, companyEntity);
+            _repository.Save();
+        }
     }
 }

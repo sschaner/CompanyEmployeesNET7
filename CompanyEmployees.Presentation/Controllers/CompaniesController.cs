@@ -100,5 +100,22 @@
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Updates the company.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="company">The company.</param>
+        /// <returns></returns>
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateCompany(Guid id, [FromBody] CompanyForUpdateDto company)
+        {
+            if (company is null)
+                return BadRequest("CompanyForUpdateDto object is null.");
+
+            _service.CompanyService.UpdateCompany(id, company, trackChanges: true);
+
+            return NoContent();
+        }
     }
 }
