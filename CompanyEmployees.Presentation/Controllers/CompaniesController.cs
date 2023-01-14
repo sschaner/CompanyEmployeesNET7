@@ -69,6 +69,9 @@
             if (company is null)
                 return BadRequest("CompanyForCreationDto object is null.");
 
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
             var createdCompany = _service.CompanyService.CreateCompany(company);
 
             // Return the created company, using the GetCompany route.
@@ -112,6 +115,9 @@
         {
             if (company is null)
                 return BadRequest("CompanyForUpdateDto object is null.");
+
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
 
             _service.CompanyService.UpdateCompany(id, company, trackChanges: true);
 

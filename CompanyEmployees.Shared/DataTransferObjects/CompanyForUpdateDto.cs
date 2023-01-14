@@ -1,4 +1,4 @@
 ﻿namespace CompanyEmployees.Shared.DataTransferObjects
 {
-    public record CompanyForUpdateDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> employees);
+    public record CompanyForUpdateDto : CompanyForManipulationDto;
 }

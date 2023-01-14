@@ -150,5 +150,42 @@
             _mapper.Map(employeeForUpdate, employeeEntity);
             _repository.Save();
         }
+
+        /// <summary>
+        /// Gets the employee for patch.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="compTrackChanges">if set to <c>true</c> [comp track changes].</param>
+        /// <param name="empTrackChanges">if set to <c>true</c> [emp track changes].</param>
+        /// <returns></returns>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
+        public (EmployeeForUpdateDto employeeToPatch, Employee employeeEntity) GetEmployeeForPatch(Guid companyId, Guid id, bool compTrackChanges, bool empTrackChanges)
+        {
+            var company = _repository.Company.GetCompany(companyId, compTrackChanges);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employeeEntity = _repository.Employee.GetEmployee(companyId, id, empTrackChanges);
+            if (employeeEntity is null)
+                throw new EmployeeNotFoundException(id);
+
+            var employeeToPatch = _mapper.Map<EmployeeForUpdateDto>(employeeEntity);
+
+            return (employeeToPatch, employeeEntity);
+        }
+
+        /// <summary>
+        /// Saves the changes for patch.
+        /// </summary>
+        /// <param name="employeeToPatch">The employee to patch.</param>
+        /// <param name="employeeEntity">The employee entity.</param>
+        public void SaveChangesForPatch(EmployeeForUpdateDto employeeToPatch, Employee employeeEntity)
+        {
+            _mapper.Map(employeeToPatch, employeeEntity);
+
+            _repository.Save();
+        }
     }
 }

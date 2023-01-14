@@ -1,5 +1,6 @@
 ﻿namespace CompanyEmployees.Service.Contracts
 {
+    using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Shared.DataTransferObjects;
 
     public interface IEmployeeService
@@ -47,5 +48,22 @@
         /// <param name="compTrackChanges">if set to <c>true</c> [comp track changes].</param>
         /// <param name="empTrackChanges">if set to <c>true</c> [emp track changes].</param>
         void UpdateEmployeeForCompany(Guid companyId, Guid id, EmployeeForUpdateDto employeeForUpdate, bool compTrackChanges, bool empTrackChanges);
+
+        /// <summary>
+        /// Gets the employee for patch.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="compTrackChanges">if set to <c>true</c> [comp track changes].</param>
+        /// <param name="empTrackChanges">if set to <c>true</c> [emp track changes].</param>
+        /// <returns></returns>
+        (EmployeeForUpdateDto employeeToPatch, Employee employeeEntity) GetEmployeeForPatch(Guid companyId, Guid id, bool compTrackChanges, bool empTrackChanges);
+
+        /// <summary>
+        /// Saves the changes for patch.
+        /// </summary>
+        /// <param name="employeeToPatch">The employee to patch.</param>
+        /// <param name="employeeEntity">The employee entity.</param>
+        void SaveChangesForPatch(EmployeeForUpdateDto employeeToPatch, Employee employeeEntity);
     }
 }
