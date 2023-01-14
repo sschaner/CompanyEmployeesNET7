@@ -32,5 +32,11 @@
         /// </summary>
         /// <param name="company">The company.</param>
         void CreateCompany(Company company);
+
+        /// <summary>
+        /// Deletes the company.
+        /// </summary>
+        /// <param name="company">The company.</param>
+        void DeleteCompany(Company company);
     }
 }

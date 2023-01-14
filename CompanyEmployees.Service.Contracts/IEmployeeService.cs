@@ -29,5 +29,13 @@
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
         EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCreationDto employeeForCreation, bool trackChanges);
+
+        /// <summary>
+        /// Deletes the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        void DeleteEmployeeForCompany(Guid companyId, Guid id, bool trackChanges);
     }
 }

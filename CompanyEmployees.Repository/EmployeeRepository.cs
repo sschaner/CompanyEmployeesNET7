@@ -46,5 +46,11 @@
             employee.CompanyId = companyId;
             Create(employee);
         }
+
+        /// <summary>
+        /// Deletes the employee.
+        /// </summary>
+        /// <param name="employee">The employee.</param>
+        public void DeleteEmployee(Employee employee) => Delete(employee);
     }
 }

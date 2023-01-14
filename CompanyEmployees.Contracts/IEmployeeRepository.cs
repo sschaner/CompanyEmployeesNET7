@@ -27,5 +27,11 @@
         /// <param name="companyId">The company identifier.</param>
         /// <param name="employee">The employee.</param>
         void CreateEmployeeForCompany(Guid companyId, Employee employee);
+
+        /// <summary>
+        /// Deletes the employee.
+        /// </summary>
+        /// <param name="employee">The employee.</param>
+        void DeleteEmployee(Employee employee);
     }
 }

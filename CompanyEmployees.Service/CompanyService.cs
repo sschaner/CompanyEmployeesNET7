@@ -108,6 +108,12 @@
             return companyToReturn;
         }
 
+        /// <summary>
+        /// Creates the company collection.
+        /// </summary>
+        /// <param name="companyCollection">The company collection.</param>
+        /// <returns></returns>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyCollectionBadRequest"></exception>
         public (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection (IEnumerable<CompanyForCreationDto> companyCollection)
         {
             if (companyCollection is null)
@@ -125,6 +131,22 @@
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
 
             return (companies: companyCollectionToReturn, ids: ids);
+        }
+
+        /// <summary>
+        /// Deletes the company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        public void DeleteCompany(Guid companyId, bool trackChanges)
+        {
+            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            _repository.Company.DeleteCompany(company);
+            _repository.Save();
         }
     }
 }

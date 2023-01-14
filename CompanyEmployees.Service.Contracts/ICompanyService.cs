@@ -40,5 +40,12 @@
         /// <param name="companyCollection">The company collection.</param>
         /// <returns></returns>
         (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection(IEnumerable<CompanyForCreationDto> companyCollection);
+
+        /// <summary>
+        /// Deletes the company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        void DeleteCompany(Guid companyId, bool trackChanges);
     }
 }

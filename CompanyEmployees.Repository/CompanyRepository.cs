@@ -49,5 +49,11 @@
         /// </summary>
         /// <param name="company">The company.</param>
         public void CreateCompany(Company company) => Create(company);
+
+        /// <summary>
+        /// Deletes the company.
+        /// </summary>
+        /// <param name="company">The company.</param>
+        public void DeleteCompany(Company company) => Delete(company);
     }
 }

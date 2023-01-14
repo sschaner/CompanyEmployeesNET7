@@ -62,5 +62,19 @@
 
             return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id }, employeeToReturn);
         }
+
+        /// <summary>
+        /// Deletes the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid id)
+        {
+            _service.EmployeeService.DeleteEmployeeForCompany(companyId, id, trackChanges: false);
+
+            return NoContent();
+        }
     }
 }

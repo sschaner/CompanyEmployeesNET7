@@ -87,5 +87,18 @@
 
             return CreatedAtRoute("CompanyCollection", new { result.ids }, result.companies);
         }
+
+        /// <summary>
+        /// Deletes the comany.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteComany(Guid id)
+        {
+            _service.CompanyService.DeleteCompany(id, trackChanges: false);
+
+            return NoContent();
+        }
     }
 }

@@ -6,6 +6,7 @@
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
+    using System.Net.Http.Headers;
 
     internal sealed class EmployeeService : IEmployeeService
     {
@@ -102,6 +103,28 @@
             var employeeToReturn = _mapper.Map<EmployeeDto>(employeeEntity);
 
             return employeeToReturn;
+        }
+
+        /// <summary>
+        /// Deletes the employee for company.
+        /// </summary>
+        /// <param name="companyId">The company identifier.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.EmployeeNotFoundException"></exception>
+        public void DeleteEmployeeForCompany(Guid companyId, Guid id, bool trackChanges)
+        {
+            var company = _repository.Company.GetCompany(companyId, trackChanges);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employeeForCompany = _repository.Employee.GetEmployee(companyId, id, trackChanges);
+            if (employeeForCompany is null)
+                throw new EmployeeNotFoundException(id);
+
+            _repository.Employee.DeleteEmployee(employeeForCompany);
+            _repository.Save();
         }
     }
 }
