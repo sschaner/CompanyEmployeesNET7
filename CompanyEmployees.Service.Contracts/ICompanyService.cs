@@ -1,15 +1,17 @@
 ﻿namespace CompanyEmployees.Service.Contracts
 {
     using CompanyEmployees.Shared.DataTransferObjects;
+    using CompanyEmployees.Shared.RequestFeatures;
 
     public interface ICompanyService
     {
         /// <summary>
         /// Gets all companies asynchronous.
         /// </summary>
+        /// <param name="companyParameters">The company parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        Task<IEnumerable<CompanyDto>> GetAllCompaniesAsync(bool trackChanges);
+        Task<(IEnumerable<CompanyDto> companies, MetaData metaData)> GetAllCompaniesAsync(CompanyParameters companyParameters, bool trackChanges);
 
         /// <summary>
         /// Gets the company asynchronous.

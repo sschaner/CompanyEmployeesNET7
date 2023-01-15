@@ -2,6 +2,7 @@
 {
     using CompanyEmployees.Contracts;
     using CompanyEmployees.Entities.Models;
+    using CompanyEmployees.Shared.RequestFeatures;
     using Microsoft.EntityFrameworkCore;
 
     public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
@@ -19,12 +20,18 @@
         /// <summary>
         /// Gets all companies asynchronous.
         /// </summary>
+        /// <param name="companyParameters">The company parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Company>> GetAllCompaniesAsync(bool trackChanges) =>
-            await FindAll(trackChanges)
-            .OrderBy(c => c.Name)
-            .ToListAsync();
+        public async Task<PagedList<Company>> GetAllCompaniesAsync(CompanyParameters companyParameters, bool trackChanges)
+        {
+            var companies = await FindAll(trackChanges)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+
+            return PagedList<Company>
+                .ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
+        }
 
         /// <summary>
         /// Gets the company asynchronous.

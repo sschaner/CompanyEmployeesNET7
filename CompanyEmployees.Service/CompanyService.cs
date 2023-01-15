@@ -6,6 +6,7 @@
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
+    using CompanyEmployees.Shared.RequestFeatures;
     using System.ComponentModel.Design;
 
     internal sealed class CompanyService : ICompanyService
@@ -41,14 +42,15 @@
         /// <summary>
         /// Gets all companies asynchronous.
         /// </summary>
+        /// <param name="companyParameters">The company parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        public async Task<IEnumerable<CompanyDto>> GetAllCompaniesAsync(bool trackChanges)
+        public async Task<(IEnumerable<CompanyDto> companies, MetaData metaData)> GetAllCompaniesAsync(CompanyParameters companyParameters, bool trackChanges)
         {
-                var companies =  await _repository.Company.GetAllCompaniesAsync(trackChanges);
-                var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
+                var companiesWithMetaData =  await _repository.Company.GetAllCompaniesAsync(companyParameters, trackChanges);
+                var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companiesWithMetaData);
 
-                return companiesDto;
+                return (companies: companiesDto, metaData: companiesWithMetaData.MetaData);
         }
 
         /// <summary>

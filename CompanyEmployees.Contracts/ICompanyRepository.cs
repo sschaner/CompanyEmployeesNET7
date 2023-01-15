@@ -1,15 +1,17 @@
 ﻿namespace CompanyEmployees.Contracts
 {
     using CompanyEmployees.Entities.Models;
+    using CompanyEmployees.Shared.RequestFeatures;
 
     public interface ICompanyRepository
     {
         /// <summary>
         /// Gets all companies asynchronous.
         /// </summary>
+        /// <param name="companyParameters">The company parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        Task<IEnumerable<Company>> GetAllCompaniesAsync(bool trackChanges);
+        Task<PagedList<Company>> GetAllCompaniesAsync(CompanyParameters companyParameters, bool trackChanges);
 
         /// <summary>
         /// Gets the company asynchronous.

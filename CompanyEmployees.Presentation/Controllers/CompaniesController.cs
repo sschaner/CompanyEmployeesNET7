@@ -4,7 +4,9 @@
     using CompanyEmployees.Presentation.ModelBinders;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
+    using CompanyEmployees.Shared.RequestFeatures;
     using Microsoft.AspNetCore.Mvc;
+    using System.Text.Json;
 
     [Route("api/companies")]
     [ApiController]
@@ -24,13 +26,16 @@
         /// <summary>
         /// Gets the companies.
         /// </summary>
+        /// <param name="companyParameters">The company parameters.</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetCompanies()
+        public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
-                var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
-
-                return Ok(companies);
+            var pagedResult = await _service.CompanyService.GetAllCompaniesAsync(companyParameters, trackChanges: false);
+            
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+            
+            return Ok(pagedResult.companies);
         }
 
         /// <summary>
