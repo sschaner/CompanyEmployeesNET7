@@ -1,6 +1,7 @@
 ﻿namespace CompanyEmployees.Contracts
 {
     using CompanyEmployees.Entities.Models;
+    using CompanyEmployees.Shared.RequestFeatures;
 
     public interface IEmployeeRepository
     {
@@ -8,9 +9,10 @@
         /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
+        /// <param name="employeeParameters">The employee parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        Task<IEnumerable<Employee>> GetEmployeesAsync(Guid companyId, bool trackChanges);
+        Task<PagedList<Employee>> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges);
 
         /// <summary>
         /// Gets the employee asynchronous.

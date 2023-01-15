@@ -2,6 +2,7 @@
 {
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Shared.DataTransferObjects;
+    using CompanyEmployees.Shared.RequestFeatures;
 
     public interface IEmployeeService
     {
@@ -9,9 +10,10 @@
         /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
+        /// <param name="employeeParameters">The employee parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(Guid companyId, bool trackChanges);
+        Task<(IEnumerable<EmployeeDto> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges);
 
         /// <summary>
         /// Gets the employee asynchronous.

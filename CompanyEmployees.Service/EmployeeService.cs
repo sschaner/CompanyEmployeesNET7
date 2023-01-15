@@ -6,6 +6,7 @@
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
+    using CompanyEmployees.Shared.RequestFeatures;
     using System.Net.Http.Headers;
 
     internal sealed class EmployeeService : IEmployeeService
@@ -45,14 +46,14 @@
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(Guid companyId, bool trackChanges)
+        public async Task<(IEnumerable<EmployeeDto> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
         {
             await CheckIfCompanyExists(companyId, trackChanges);
 
-            var employeesFromDb = await _repository.Employee.GetEmployeesAsync(companyId, trackChanges);
-            var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesFromDb);
+            var employeesWithMetaData = await _repository.Employee.GetEmployeesAsync(companyId, employeeParameters, trackChanges);
+            var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesWithMetaData);
 
-            return employeesDto;
+            return (employees: employeesDto, metaData: employeesWithMetaData.MetaData);
         }
 
         /// <summary>

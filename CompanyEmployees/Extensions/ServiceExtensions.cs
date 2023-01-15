@@ -17,7 +17,8 @@
                 options.AddPolicy("CorsPolicy", builder =>
                 builder.AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .WithExposedHeaders("X-Pagination"));
             });
 
         /// <summary>Configures the IIS integration.</summary>
