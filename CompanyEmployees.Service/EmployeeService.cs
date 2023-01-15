@@ -7,7 +7,6 @@
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
     using CompanyEmployees.Shared.RequestFeatures;
-    using System.Net.Http.Headers;
 
     internal sealed class EmployeeService : IEmployeeService
     {
@@ -48,6 +47,9 @@
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
         public async Task<(IEnumerable<EmployeeDto> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
         {
+            if (!employeeParameters.ValidAgeRange)
+                throw new MaxAgeRangeBadRequestException();
+
             await CheckIfCompanyExists(companyId, trackChanges);
 
             var employeesWithMetaData = await _repository.Employee.GetEmployeesAsync(companyId, employeeParameters, trackChanges);
