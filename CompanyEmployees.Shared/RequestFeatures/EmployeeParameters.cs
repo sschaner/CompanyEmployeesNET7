@@ -29,5 +29,13 @@
         ///   <c>true</c> if [valid age range]; otherwise, <c>false</c>.
         /// </value>
         public bool ValidAgeRange => MaxAge > MinAge;
+
+        /// <summary>
+        /// Gets or sets the search term.
+        /// </summary>
+        /// <value>
+        /// The search term.
+        /// </value>
+        public string? SearchTerm { get; set; }
     }
 }
