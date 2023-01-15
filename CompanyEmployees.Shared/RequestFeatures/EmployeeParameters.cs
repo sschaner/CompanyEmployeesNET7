@@ -6,6 +6,8 @@
         // Unsigned integers only contain positive numbers (or zero)
         // This means the default for uint is 0
 
+        public EmployeeParameters() => OrderBy = "name";
+
         /// <summary>
         /// Gets or sets the minimum age.
         /// </summary>

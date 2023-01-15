@@ -37,5 +37,13 @@
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the order by.
+        /// </summary>
+        /// <value>
+        /// The order by.
+        /// </value>
+        public string? OrderBy { get; set; }
     }
 }

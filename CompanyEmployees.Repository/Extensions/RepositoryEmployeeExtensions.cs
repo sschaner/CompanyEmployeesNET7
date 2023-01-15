@@ -1,6 +1,9 @@
 ﻿namespace CompanyEmployees.Repository.Extensions
 {
     using CompanyEmployees.Entities.Models;
+    using System.Linq.Dynamic.Core;
+    using System.Reflection;
+    using System.Text;
 
     public static class RepositoryEmployeeExtensions
     {
@@ -28,6 +31,25 @@
             var lowerCaseTerm = searchTerm.Trim().ToLower();
 
             return employees.Where(e => e.Name.ToLower().Contains(lowerCaseTerm));
+        }
+
+        /// <summary>
+        /// Sorts the specified order by query string.
+        /// </summary>
+        /// <param name="employees">The employees.</param>
+        /// <param name="orderByQueryString">The order by query string.</param>
+        /// <returns></returns>
+        public static IQueryable<Employee> Sort(this IQueryable<Employee> employees, string orderByQueryString)
+        {
+            if (string.IsNullOrWhiteSpace(orderByQueryString))
+                return employees.OrderBy(e => e.Name);
+
+            var orderQuery = OrderQueryBuilder.CreateOrderQuery<Employee>(orderByQueryString);
+
+            if (string.IsNullOrWhiteSpace(orderQuery))
+                return employees.OrderBy(e => e.Name);
+
+            return employees.OrderBy(orderQuery);
         }
     }
 }
