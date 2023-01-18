@@ -1,5 +1,6 @@
 ﻿namespace CompanyEmployees.Service.Contracts
 {
+    using CompanyEmployees.Entities.LinkModels;
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Shared.DataTransferObjects;
     using CompanyEmployees.Shared.RequestFeatures;
@@ -11,10 +12,10 @@
         /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
-        /// <param name="employeeParameters">The employee parameters.</param>
+        /// <param name="linkParameters">The link parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
-        Task<(IEnumerable<Entity> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges);
+        Task<(LinkResponse linkResponse, MetaData metaData)> GetEmployeesAsync(Guid companyId, LinkParameters linkParameters, bool trackChanges);
 
         /// <summary>
         /// Gets the employee asynchronous.

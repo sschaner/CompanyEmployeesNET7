@@ -11,7 +11,7 @@
         /// <param name="entities">The entities.</param>
         /// <param name="fieldsString">The fields string.</param>
         /// <returns></returns>
-        IEnumerable<Entity> ShapeData(IEnumerable<T> entities, string fieldsString);
+        IEnumerable<ShapedEntity> ShapeData(IEnumerable<T> entities, string fieldsString);
 
         /// <summary>
         /// Shapes the data.
@@ -19,6 +19,6 @@
         /// <param name="entity">The entity.</param>
         /// <param name="fieldsString">The fields string.</param>
         /// <returns></returns>
-        Entity ShapeData(T entity, string fieldsString);
+        ShapedEntity ShapeData(T entity, string fieldsString);
     }
 }

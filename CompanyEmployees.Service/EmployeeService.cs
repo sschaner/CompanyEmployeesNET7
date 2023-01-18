@@ -3,6 +3,7 @@
     using AutoMapper;
     using CompanyEmployees.Contracts;
     using CompanyEmployees.Entities.Exceptions;
+    using CompanyEmployees.Entities.LinkModels;
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
@@ -27,9 +28,9 @@
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// The data shaper
+        /// The employee links
         /// </summary>
-        private readonly IDataShaper<EmployeeDto> _dataShaper;
+        private readonly IEmployeeLinks _employeeLinks;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompanyService" /> class.
@@ -37,36 +38,36 @@
         /// <param name="repository">The repository.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
-        /// <param name="dataShaper">The data shaper.</param>
-        public EmployeeService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<EmployeeDto> dataShaper)
+        /// <param name="employeeLinks">The employee links.</param>
+        public EmployeeService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IEmployeeLinks employeeLinks)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-            _dataShaper = dataShaper;
+            _employeeLinks = employeeLinks;
         }
 
         /// <summary>
         /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
-        /// <param name="employeeParameters">The employee parameters.</param>
+        /// <param name="linkParameters">The link parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.MaxAgeRangeBadRequestException"></exception>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public async Task<(IEnumerable<Entity> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
+        public async Task<(LinkResponse linkResponse , MetaData metaData)> GetEmployeesAsync(Guid companyId, LinkParameters linkParameters, bool trackChanges)
         {
-            if (!employeeParameters.ValidAgeRange)
+            if (!linkParameters.EmployeeParameters.ValidAgeRange)
                 throw new MaxAgeRangeBadRequestException();
 
             await CheckIfCompanyExists(companyId, trackChanges);
 
-            var employeesWithMetaData = await _repository.Employee.GetEmployeesAsync(companyId, employeeParameters, trackChanges);
+            var employeesWithMetaData = await _repository.Employee.GetEmployeesAsync(companyId, linkParameters.EmployeeParameters, trackChanges);
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesWithMetaData);
-            var shapedData = _dataShaper.ShapeData(employeesDto, employeeParameters.Fields);
+            var links = _employeeLinks.TryGenerateLinks(employeesDto, linkParameters.EmployeeParameters.Fields, companyId, linkParameters.Context);
 
-            return (employees: shapedData, metaData: employeesWithMetaData.MetaData);
+            return (linkResponse: links, metaData: employeesWithMetaData.MetaData);
         }
 
         /// <summary>

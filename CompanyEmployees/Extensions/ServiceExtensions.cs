@@ -5,6 +5,8 @@
     using CompanyEmployees.Repository;
     using CompanyEmployees.Service;
     using CompanyEmployees.Service.Contracts;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Formatters;
     using Microsoft.EntityFrameworkCore;
 
     public static class ServiceExtensions
@@ -66,5 +68,30 @@
         /// <returns></returns>
         public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
             builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+
+        /// <summary>
+        /// Adds the custom media types.
+        /// codemaze can be anything
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public static void AddCustomMediaTypes(this IServiceCollection services)
+        {
+            services.Configure<MvcOptions>(config =>
+            {
+                var systemTextJsonOutputFormatter = config.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+
+                if (systemTextJsonOutputFormatter != null)
+                {
+                    systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.codemaze.hateoas+json");
+                }
+
+                var xmlOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+
+                if (xmlOutputFormatter != null)
+                {
+                    xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.codemaze.hateos+xml");
+                }
+            });
+        }
     }
 }
