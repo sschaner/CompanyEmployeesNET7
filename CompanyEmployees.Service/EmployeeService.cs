@@ -7,6 +7,7 @@
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
     using CompanyEmployees.Shared.RequestFeatures;
+    using System.Dynamic;
 
     internal sealed class EmployeeService : IEmployeeService
     {
@@ -26,26 +27,35 @@
         private readonly IMapper _mapper;
 
         /// <summary>
+        /// The data shaper
+        /// </summary>
+        private readonly IDataShaper<EmployeeDto> _dataShaper;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CompanyService" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
-        public EmployeeService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        /// <param name="dataShaper">The data shaper.</param>
+        public EmployeeService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<EmployeeDto> dataShaper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _dataShaper = dataShaper;
         }
 
         /// <summary>
         /// Gets the employees asynchronous.
         /// </summary>
         /// <param name="companyId">The company identifier.</param>
+        /// <param name="employeeParameters">The employee parameters.</param>
         /// <param name="trackChanges">if set to <c>true</c> [track changes].</param>
         /// <returns></returns>
+        /// <exception cref="CompanyEmployees.Entities.Exceptions.MaxAgeRangeBadRequestException"></exception>
         /// <exception cref="CompanyEmployees.Entities.Exceptions.CompanyNotFoundException"></exception>
-        public async Task<(IEnumerable<EmployeeDto> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
+        public async Task<(IEnumerable<Entity> employees, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
         {
             if (!employeeParameters.ValidAgeRange)
                 throw new MaxAgeRangeBadRequestException();
@@ -54,8 +64,9 @@
 
             var employeesWithMetaData = await _repository.Employee.GetEmployeesAsync(companyId, employeeParameters, trackChanges);
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesWithMetaData);
+            var shapedData = _dataShaper.ShapeData(employeesDto, employeeParameters.Fields);
 
-            return (employees: employeesDto, metaData: employeesWithMetaData.MetaData);
+            return (employees: shapedData, metaData: employeesWithMetaData.MetaData);
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 using CompanyEmployees.Contracts;
 using CompanyEmployees.Extensions;
 using CompanyEmployees.Presentation.ActionFilters;
+using CompanyEmployees.Service.DataShaping;
+using CompanyEmployees.Shared.DataTransferObjects;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -28,6 +30,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 // Register ActionFilters
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
 
 builder.Services.AddControllers(config =>
 {

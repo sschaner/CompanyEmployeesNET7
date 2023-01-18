@@ -3,6 +3,7 @@
     using AutoMapper;
     using CompanyEmployees.Contracts;
     using CompanyEmployees.Service.Contracts;
+    using CompanyEmployees.Shared.DataTransferObjects;
 
     public sealed class ServiceManager : IServiceManager
     {
@@ -22,10 +23,10 @@
         /// <param name="repositoryManager">The repository manager.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper)
+        public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper, IDataShaper<EmployeeDto> dataShaper)
         {
             _companyService = new Lazy<ICompanyService>(() => new CompanyService(repositoryManager, logger, mapper));
-            _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repositoryManager, logger, mapper));
+            _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repositoryManager, logger, mapper, dataShaper));
         }
 
         /// <summary>

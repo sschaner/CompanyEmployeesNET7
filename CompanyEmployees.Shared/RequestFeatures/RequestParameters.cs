@@ -45,5 +45,13 @@
         /// The order by.
         /// </value>
         public string? OrderBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fields.
+        /// </summary>
+        /// <value>
+        /// The fields.
+        /// </value>
+        public string? Fields { get; set; }
     }
 }
