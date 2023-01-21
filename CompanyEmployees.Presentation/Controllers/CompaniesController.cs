@@ -119,5 +119,17 @@
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Gets the companies options.
+        /// </summary>
+        /// <returns></returns>
+        [HttpOptions]
+        public IActionResult GetCompaniesOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+
+            return Ok();
+        }
     }
 }

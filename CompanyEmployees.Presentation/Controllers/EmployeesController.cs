@@ -31,6 +31,8 @@
         /// <param name="employeeParameters">The employee parameters.</param>
         /// <returns></returns>
         [HttpGet]
+        // HttpHead allows us to call this action with HEAD also
+        [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetEmployeesForCompany(Guid companyId, [FromQuery] EmployeeParameters employeeParameters)
         {
