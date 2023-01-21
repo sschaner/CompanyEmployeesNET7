@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="companyParameters">The company parameters.</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             var pagedResult = await _service.CompanyService.GetAllCompaniesAsync(companyParameters, trackChanges: false);
@@ -69,7 +69,7 @@
         /// </summary>
         /// <param name="company">The company.</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost(Name = "CreateCompany")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {
