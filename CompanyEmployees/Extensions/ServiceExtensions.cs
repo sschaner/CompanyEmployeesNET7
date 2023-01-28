@@ -7,6 +7,7 @@
     using CompanyEmployees.Service.Contracts;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Formatters;
+    using Microsoft.AspNetCore.Mvc.Versioning;
     using Microsoft.EntityFrameworkCore;
 
     public static class ServiceExtensions
@@ -93,6 +94,24 @@
                     xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.codemaze.hateos+xml");
                     xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.codemaze.apiroot+xml");
                 }
+            });
+        }
+
+        /// <summary>
+        /// Configures the versioning.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public static void ConfigureVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+                // Support for HTTP header versioning
+                opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                // Support for query string versioning
+                opt.ApiVersionReader = new QueryStringApiVersionReader("api-version");
             });
         }
     }

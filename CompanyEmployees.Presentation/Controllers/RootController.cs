@@ -27,6 +27,9 @@
         [HttpGet(Name = "GetRoot")]
         public IActionResult GetRoot([FromHeader(Name = "Accept")] string mediaType)
         {
+            // Put this into an Accept header: application/vnd.codemaze.apiroot+json
+            // Can also get XML back if you put this into the Accept header: application/vnd.codemaze.apiroot+xml
+
             if (mediaType.Contains("application/vnd.codemaze.apiroot"))
             {
                 var list = new List<Link>
