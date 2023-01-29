@@ -7,6 +7,7 @@
     using CompanyEmployees.Shared.RequestFeatures;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OutputCaching;
+    using Microsoft.AspNetCore.RateLimiting;
     using System.Text.Json;
 
     [ApiVersion("1.0")]
@@ -33,6 +34,7 @@
         /// <param name="companyParameters">The company parameters.</param>
         /// <returns></returns>
         [HttpGet(Name = "GetCompanies")]
+        [EnableRateLimiting("SpecificPolicy")]
         public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             var pagedResult = await _service.CompanyService.GetAllCompaniesAsync(companyParameters, trackChanges: false);
@@ -50,6 +52,7 @@
         [HttpGet("{id:guid}", Name = "CompanyById")]
         //[ResponseCache(Duration = 60)]
         [OutputCache(Duration = 60)]
+        [DisableRateLimiting]
         public async Task<IActionResult> GetCompany(Guid id)
         {
             var company = await _service.CompanyService.GetCompanyAsync(id, trackChanges: false);

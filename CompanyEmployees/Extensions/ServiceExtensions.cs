@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Mvc.Formatters;
     using Microsoft.AspNetCore.Mvc.Versioning;
     using Microsoft.EntityFrameworkCore;
+    using System.Threading.RateLimiting;
 
     public static class ServiceExtensions
     {
@@ -125,5 +126,47 @@
                 //opt.AddBasePolicy(bp => bp.Expire(TimeSpan.FromSeconds(10)));
                 opt.AddPolicy("120SecondsDuration", p => p.Expire(TimeSpan.FromSeconds(120)));
             });
+
+        /// <summary>
+        /// Configures the rate limiting options.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            services.AddRateLimiter(opt =>
+            {
+                opt.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+                    RateLimitPartition.GetFixedWindowLimiter("GlobalLimiter", partition => new FixedWindowRateLimiterOptions
+                    {
+                        // Allow 5 requests per minute
+                        // If more requests are made per minute, queue up 2 of those.
+                        // The extra requests will "hang" instead of being rejected.
+                        // The next minute, this queue will be processed.
+                        AutoReplenishment = true,
+                        PermitLimit = 5,
+                        QueueLimit = 2,
+                        Window = TimeSpan.FromMinutes(1)
+                    }));
+
+                opt.AddPolicy("SpecificPolicy", context =>
+                RateLimitPartition.GetFixedWindowLimiter("SepcificLimiter", partition => new FixedWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 3,
+                    Window = TimeSpan.FromSeconds(10)
+                }));
+
+                opt.OnRejected = async (context, token) =>
+                {
+                    context.HttpContext.Response.StatusCode = 429;
+
+                    if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+                        await context.HttpContext.Response.WriteAsync($"Too many requests. Please try again after {retryAfter.TotalSeconds} seconds.", token);
+                    else
+                        await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
+                };
+            });
+        }
+
     }
 }
