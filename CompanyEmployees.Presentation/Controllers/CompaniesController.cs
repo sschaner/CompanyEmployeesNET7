@@ -5,6 +5,7 @@
     using CompanyEmployees.Service.Contracts;
     using CompanyEmployees.Shared.DataTransferObjects;
     using CompanyEmployees.Shared.RequestFeatures;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OutputCaching;
     using Microsoft.AspNetCore.RateLimiting;
@@ -13,6 +14,7 @@
     [ApiVersion("1.0")]
     [Route("api/companies")]
     [ApiController]
+    [Authorize]
     //[ResponseCache(CacheProfileName = "120SecondsDuration")]
     [OutputCache(PolicyName = "120SecondsDuration")]
     public class CompaniesController : ControllerBase
@@ -34,6 +36,7 @@
         /// <param name="companyParameters">The company parameters.</param>
         /// <returns></returns>
         [HttpGet(Name = "GetCompanies")]
+        [Authorize(Roles = "Manager")]
         [EnableRateLimiting("SpecificPolicy")]
         public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {

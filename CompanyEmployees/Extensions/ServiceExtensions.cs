@@ -1,14 +1,19 @@
 ﻿namespace CompanyEmployees.Extensions
 {
     using CompanyEmployees.Contracts;
+    using CompanyEmployees.Entities.Models;
     using CompanyEmployees.LoggerService;
     using CompanyEmployees.Repository;
     using CompanyEmployees.Service;
     using CompanyEmployees.Service.Contracts;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Formatters;
     using Microsoft.AspNetCore.Mvc.Versioning;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
     using System.Threading.RateLimiting;
 
     public static class ServiceExtensions
@@ -138,12 +143,12 @@
                 opt.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
                     RateLimitPartition.GetFixedWindowLimiter("GlobalLimiter", partition => new FixedWindowRateLimiterOptions
                     {
-                        // Allow 5 requests per minute
+                        // Allow 30 requests per minute
                         // If more requests are made per minute, queue up 2 of those.
                         // The extra requests will "hang" instead of being rejected.
                         // The next minute, this queue will be processed.
                         AutoReplenishment = true,
-                        PermitLimit = 5,
+                        PermitLimit = 30,
                         QueueLimit = 2,
                         Window = TimeSpan.FromMinutes(1)
                     }));
@@ -168,5 +173,55 @@
             });
         }
 
+        /// <summary>
+        /// Configures the identiy.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public static void ConfigureIdentiy(this IServiceCollection services)
+        {
+            // Adding and configuring Identity for the User and IdentityRole types
+            var builder = services.AddIdentity<User, IdentityRole>(o =>
+            {
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 10;
+                o.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<RepositoryContext>()
+            .AddDefaultTokenProviders();
+        }
+
+        /// <summary>
+        /// Configures the JWT.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <param name="configuration">The configuration.</param>
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = jwtSettings["validIssuer"],
+                    ValidAudience = jwtSettings["validAudience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                };
+            });
+        }
     }
 }

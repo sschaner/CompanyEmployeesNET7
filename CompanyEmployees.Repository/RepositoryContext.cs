@@ -2,9 +2,10 @@
 {
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.Repository.Configuration;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class RepositoryContext : DbContext
+    public class RepositoryContext : IdentityDbContext<User>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RepositoryContext"/> class.
@@ -40,8 +41,12 @@
         /// </remarks>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Required for migration to work properly
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
         /// <summary>
@@ -51,7 +56,7 @@
         /// The companies.
         /// </value>
         /// Companies is the name of the table in the database
-        public DbSet<Company>? Companies { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         /// <summary>
         /// Gets or sets the employees.
@@ -60,6 +65,6 @@
         /// The employees.
         /// </value>
         /// Employees is the name of the table in the database
-        public DbSet<Employee>? Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

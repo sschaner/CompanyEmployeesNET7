@@ -24,6 +24,9 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureOutputCaching();
 builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentiy();
+builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -70,6 +73,7 @@ app.UseCors("CorsPolicy");
 //app.UseResponseCaching();
 app.UseOutputCache();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
