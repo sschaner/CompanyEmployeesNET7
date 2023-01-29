@@ -23,7 +23,15 @@
         /// <summary>
         /// Creates the token.
         /// </summary>
+        /// <param name="populateExp">if set to <c>true</c> [populate exp].</param>
         /// <returns></returns>
-        Task<string> CreateToken();
+        Task<TokenDto> CreateToken(bool populateExp);
+
+        /// <summary>
+        /// Refreshes the token.
+        /// </summary>
+        /// <param name="tokenDto">The token dto.</param>
+        /// <returns></returns>
+        Task<TokenDto> RefreshToken(TokenDto tokenDto);
     }
 }

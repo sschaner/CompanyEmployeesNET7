@@ -19,5 +19,21 @@
         /// The last name.
         /// </value>
         public string? LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the refresh token.
+        /// </summary>
+        /// <value>
+        /// The refresh token.
+        /// </value>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the refresh token expiry time.
+        /// </summary>
+        /// <value>
+        /// The refresh token expiry time.
+        /// </value>
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }
