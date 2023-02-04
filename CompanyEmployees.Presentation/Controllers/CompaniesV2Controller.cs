@@ -5,11 +5,11 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Text.Json;
 
-    [ApiVersion("2.0")]
     //[ApiVersion("2.0", Deprecated = true)]
     [Route("api/companies")]
     //[Route("api/{v:apiversion}/companies")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v2")]
     public class CompaniesV2Controller : ControllerBase
     {
         /// <summary>

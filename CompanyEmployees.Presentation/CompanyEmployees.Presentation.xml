@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CompanyEmployees.Presentation</name>
+    </assembly>
+    <members>
+        <member name="M:CompanyEmployees.Presentation.ActionFilters.ValidateMediaTypeAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Called before the action executes, after model binding is complete.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext" />.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.ActionFilters.ValidateMediaTypeAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Called after the action executes, before the action result.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext" />.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.ActionFilters.ValidationFilterAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.ActionFilters.ValidationFilterAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.ActionFilters.ValidationFilterAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Called before the action executes, after model binding is complete.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext" />.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.ActionFilters.ValidationFilterAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Called after the action executes, before the action result.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext" />.</param>
+        </member>
+        <member name="F:CompanyEmployees.Presentation.Controllers.AuthenticationController._service">
+            <summary>
+            The service
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.AuthenticationController.#ctor(CompanyEmployees.Service.Contracts.IServiceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.Controllers.AuthenticationController"/> class.
+            </summary>
+            <param name="service">The service.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.AuthenticationController.RegisterUser(CompanyEmployees.Shared.DataTransferObjects.UserForRegistrationDto)">
+            <summary>
+            Registers the user.
+            </summary>
+            <param name="userForRegistration">The user for registration.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.AuthenticationController.Authenticate(CompanyEmployees.Shared.DataTransferObjects.UserForAuthenticationDto)">
+            <summary>
+            Authenticates the specified user.
+            </summary>
+            <param name="user">The user.</param>
+            <returns></returns>
+        </member>
+        <member name="F:CompanyEmployees.Presentation.Controllers.CompaniesController._service">
+            <summary>
+            The service
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.#ctor(CompanyEmployees.Service.Contracts.IServiceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.Controllers.CompaniesController"/> class.
+            </summary>
+            <param name="service">The service.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.GetCompanies(CompanyEmployees.Shared.RequestFeatures.CompanyParameters)">
+            <summary>
+            Gets the companies.
+            </summary>
+            <param name="companyParameters">The company parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.GetCompany(System.Guid)">
+            <summary>
+            Gets the company.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.GetCompanyCollection(System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Gets the company collection.
+            </summary>
+            <param name="ids">The ids.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.CreateCompany(CompanyEmployees.Shared.DataTransferObjects.CompanyForCreationDto)">
+            <summary>
+            Creates a company.
+            </summary>
+            <param name="company">The company.</param>
+            <returns>A newly created company</returns>
+            <response code="201">Returns the newly created item</response>
+            <response code="400">If the item is null</response>
+            <response code="422">If the model is invalid</response>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.CreateCompanyCollection(System.Collections.Generic.IEnumerable{CompanyEmployees.Shared.DataTransferObjects.CompanyForCreationDto})">
+            <summary>
+            Creates the company collection.
+            </summary>
+            <param name="companyCollection">The company collection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.DeleteComany(System.Guid)">
+            <summary>
+            Deletes the comany.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.UpdateCompany(System.Guid,CompanyEmployees.Shared.DataTransferObjects.CompanyForUpdateDto)">
+            <summary>
+            Updates the company.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="company">The company.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesController.GetCompaniesOptions">
+            <summary>
+            Gets the companies options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:CompanyEmployees.Presentation.Controllers.CompaniesV2Controller._service">
+            <summary>
+            The service
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesV2Controller.#ctor(CompanyEmployees.Service.Contracts.IServiceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.Controllers.CompaniesV2Controller"/> class.
+            </summary>
+            <param name="service">The service.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.CompaniesV2Controller.GetCompanies(CompanyEmployees.Shared.RequestFeatures.CompanyParameters)">
+            <summary>
+            Gets the companies.
+            </summary>
+            <param name="companyParameters">The company parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="F:CompanyEmployees.Presentation.Controllers.EmployeesController._service">
+            <summary>
+            The service
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.#ctor(CompanyEmployees.Service.Contracts.IServiceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.Controllers.EmployeesController"/> class.
+            </summary>
+            <param name="service">The service.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.GetEmployeesForCompany(System.Guid,CompanyEmployees.Shared.RequestFeatures.EmployeeParameters)">
+            <summary>
+            Gets the employees for a company.
+            </summary>
+            <param name="companyId">The company identifier.</param>
+            <param name="employeeParameters">The employee parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.GetEmployeeForCompany(System.Guid,System.Guid)">
+            <summary>
+            Gets an employee for a company.
+            </summary>
+            <param name="companyId">The company identifier.</param>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.CreateEmployeeForCompany(System.Guid,CompanyEmployees.Shared.DataTransferObjects.EmployeeForCreationDto)">
+            <summary>
+            Creates an employee for a company.
+            </summary>
+            <param name="companyId">The company identifier.</param>
+            <param name="employee">The employee.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.DeleteEmployeeForCompany(System.Guid,System.Guid)">
+            <summary>
+            Deletes the employee for company.
+            </summary>
+            <param name="companyId">The company identifier.</param>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.UpdateEmployeeForCompany(System.Guid,System.Guid,CompanyEmployees.Shared.DataTransferObjects.EmployeeForUpdateDto)">
+            <summary>
+            Updates the employee for company.
+            </summary>
+            <param name="companyId">The company identifier.</param>
+            <param name="id">The identifier.</param>
+            <param name="employee">The employee.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.EmployeesController.PartiallyUpdateEmployeeForCompany(System.Guid,System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CompanyEmployees.Shared.DataTransferObjects.EmployeeForUpdateDto})">
+            <summary>
+            Partially updates the employee for company.
+            </summary>
+            <param name="companyId">The company identifier.</param>
+            <param name="id">The identifier.</param>
+            <param name="patchDoc">The patch document.</param>
+            <returns></returns>
+        </member>
+        <member name="F:CompanyEmployees.Presentation.Controllers.RootController._linkGenerator">
+            <summary>
+            The link generator
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.RootController.#ctor(Microsoft.AspNetCore.Routing.LinkGenerator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.Controllers.RootController"/> class.
+            </summary>
+            <param name="linkGenerator">The link generator.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.RootController.GetRoot(System.String)">
+            <summary>
+            Gets the root.
+            </summary>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="F:CompanyEmployees.Presentation.Controllers.TokenController._service">
+            <summary>
+            The service
+            </summary>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.TokenController.#ctor(CompanyEmployees.Service.Contracts.IServiceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CompanyEmployees.Presentation.Controllers.TokenController"/> class.
+            </summary>
+            <param name="service">The service.</param>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.Controllers.TokenController.Refresh(CompanyEmployees.Shared.DataTransferObjects.TokenDto)">
+            <summary>
+            Refreshes the specified token dto.
+            </summary>
+            <param name="tokenDto">The token dto.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompanyEmployees.Presentation.ModelBinders.ArrayModelBinder.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)">
+            <summary>
+            Attempts to bind a model.
+            </summary>
+            <param name="bindingContext">The <see cref="T:Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext" />.</param>
+            <returns>
+            <para>
+            A <see cref="T:System.Threading.Tasks.Task" /> which will complete when the model binding process completes.
+            </para>
+            <para>
+            If model binding was successful, the <see cref="P:Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext.Result" /> should have
+            <see cref="P:Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingResult.IsModelSet" /> set to <c>true</c>.
+            </para>
+            <para>
+            A model binder that completes successfully should set <see cref="P:Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext.Result" /> to
+            a value returned from <see cref="M:Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingResult.Success(System.Object)" />.
+            </para>
+            </returns>
+        </member>
+    </members>
+</doc>
