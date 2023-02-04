@@ -1,6 +1,7 @@
 ﻿namespace CompanyEmployees.Extensions
 {
     using CompanyEmployees.Contracts;
+    using CompanyEmployees.Entities.ConfigurationModels;
     using CompanyEmployees.Entities.Models;
     using CompanyEmployees.LoggerService;
     using CompanyEmployees.Repository;
@@ -200,7 +201,9 @@
         /// <param name="configuration">The configuration.</param>
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection("JwtSettings");
+            var jwtConfiguration = new JwtConfiguration();
+            configuration.Bind(jwtConfiguration.Section, jwtConfiguration);
+
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
             services.AddAuthentication(opt =>
@@ -217,11 +220,19 @@
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = jwtSettings["validIssuer"],
-                    ValidAudience = jwtSettings["validAudience"],
+                    ValidIssuer = jwtConfiguration.ValidIssuer,
+                    ValidAudience = jwtConfiguration.ValidAudience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
         }
+
+        /// <summary>
+        /// Adds the JWT configuration.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <param name="configuration">The configuration.</param>
+        public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) =>
+            services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
     }
 }
